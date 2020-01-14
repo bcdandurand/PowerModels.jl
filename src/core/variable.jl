@@ -134,7 +134,7 @@ function variable_voltage_magnitude_sqr(pm::AbstractPowerModel; nw::Int=pm.cnw, 
 end
 
 function sol_post_processor_w!(pm::AbstractPowerModel, n::Int, c::Int, sol_comp::Dict{String,<:Any})
-    sol_comp["va"] = sqrt(sol_comp["w"])
+    sol_comp["vm"] = sqrt(sol_comp["w"])
 end
 
 
