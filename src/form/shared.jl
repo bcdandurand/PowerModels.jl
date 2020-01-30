@@ -210,8 +210,9 @@ function constraint_ohms_yt_from(pm::AbstractWRModels, n::Int, c::Int, f_bus, t_
     wr   = var(pm, n, c, :wr, (f_bus, t_bus))
     wi   = var(pm, n, c, :wi, (f_bus, t_bus))
 
-    JuMP.@constraint(pm.model, p_fr ==  (g+g_fr)/tm^2*w_fr + (-g*tr+b*ti)/tm^2*wr + (-b*tr-g*ti)/tm^2*wi )
-    JuMP.@constraint(pm.model, q_fr == -(b+b_fr)/tm^2*w_fr - (-b*tr-g*ti)/tm^2*wr + (-g*tr+b*ti)/tm^2*wi )
+    cref_p=JuMP.@constraint(pm.model, p_fr ==  (g+g_fr)/tm^2*w_fr + (-g*tr+b*ti)/tm^2*wr + (-b*tr-g*ti)/tm^2*wi )
+    cref_q=JuMP.@constraint(pm.model, q_fr == -(b+b_fr)/tm^2*w_fr - (-b*tr-g*ti)/tm^2*wr + (-g*tr+b*ti)/tm^2*wi )
+    return cref_p,cref_q
 end
 
 
@@ -225,8 +226,9 @@ function constraint_ohms_yt_to(pm::AbstractWRModels, n::Int, c::Int, f_bus, t_bu
     wr   = var(pm, n, c, :wr, (f_bus, t_bus))
     wi   = var(pm, n, c, :wi, (f_bus, t_bus))
 
-    JuMP.@constraint(pm.model, p_to ==  (g+g_to)*w_to + (-g*tr-b*ti)/tm^2*wr + (-b*tr+g*ti)/tm^2*-wi )
-    JuMP.@constraint(pm.model, q_to == -(b+b_to)*w_to - (-b*tr+g*ti)/tm^2*wr + (-g*tr-b*ti)/tm^2*-wi )
+    cref_p=JuMP.@constraint(pm.model, p_to ==  (g+g_to)*w_to + (-g*tr-b*ti)/tm^2*wr + (-b*tr+g*ti)/tm^2*-wi )
+    cref_q=JuMP.@constraint(pm.model, q_to == -(b+b_to)*w_to - (-b*tr+g*ti)/tm^2*wr + (-g*tr-b*ti)/tm^2*-wi )
+    return cref_p,cref_q
 end
 
 

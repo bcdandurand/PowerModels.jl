@@ -38,7 +38,8 @@ function constraint_ohms_yt_from(pm::AbstractDCPModel, n::Int, c::Int, f_bus, t_
     va_fr = var(pm, n, c, :va, f_bus)
     va_to = var(pm, n, c, :va, t_bus)
 
-    JuMP.@constraint(pm.model, p_fr == -b*(va_fr - va_to))
+    cref=JuMP.@constraint(pm.model, p_fr == -b*(va_fr - va_to))
+    return cref
     # omit reactive constraint
 end
 
@@ -93,7 +94,8 @@ function constraint_ohms_yt_from(pm::AbstractDCMPPModel, n::Int, c::Int, f_bus, 
     # get b only based on br_x (b = -1 / br_x) and take tap + shift into account
     x = -b / (g^2 + b^2)
     ta = atan(ti, tr)
-    JuMP.@constraint(pm.model, p_fr == (va_fr - va_to - ta)/(x*tm))
+    cref=JuMP.@constraint(pm.model, p_fr == (va_fr - va_to - ta)/(x*tm))
+    return cref
 end
 
 ""
@@ -371,7 +373,8 @@ function constraint_ohms_yt_to(pm::AbstractDCPLLModel, n::Int, c::Int, f_bus, t_
     va_to = var(pm, n, c, :va, t_bus)
 
     r = g/(g^2 + b^2)
-    JuMP.@constraint(pm.model, p_fr + p_to >= r*(p_fr^2))
+    cref=JuMP.@constraint(pm.model, p_fr + p_to >= r*(p_fr^2))
+    return cref
 end
 
 ""
